@@ -7,10 +7,12 @@ const KioskView: React.FC = () => {
   const [scannedCode, setScannedCode] = useState<string | null>(null);
   
   const handleScanComplete = (code: string) => {
+    console.log("Scan completed with code:", code);
     setScannedCode(code);
   };
   
   const handleReset = () => {
+    console.log("Resetting scanner");
     setScannedCode(null);
   };
   

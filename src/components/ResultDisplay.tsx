@@ -4,25 +4,16 @@ import { Check, FileCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { EventData } from "@/types/kiosk";
 
 interface ResultDisplayProps {
   scanData: string;
   onReset: () => void;
 }
 
-interface MockEventData {
-  id: string;
-  name: string;
-  date: string;
-  time: string;
-  location: string;
-  seat: string;
-  isAvailable: boolean;
-}
-
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ scanData, onReset }) => {
   // Mock data - in a real app, you would fetch this data from an API based on the scanData
-  const parseMockData = (): MockEventData => {
+  const parseMockData = (): EventData => {
     // Simulate parsing the scan data
     const parts = scanData.split("-");
     

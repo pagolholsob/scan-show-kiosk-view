@@ -12,6 +12,7 @@ const Scanner: React.FC<ScannerProps> = ({ onScanComplete }) => {
   const [isScanning, setIsScanning] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const scannerBoxRef = useRef<HTMLDivElement>(null);
+  const scanTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const startScanner = async () => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -25,12 +26,11 @@ const Scanner: React.FC<ScannerProps> = ({ onScanComplete }) => {
           setIsScanning(true);
           
           // Simulate a successful scan after 3 seconds for demo purposes
-          setTimeout(() => {
+          scanTimeoutRef.current = setTimeout(() => {
             // This is just for demo. In a real app, you'd use a library like
             // zxing-js or dynamsoft-javascript-barcode
             const mockCode = "EVENT-1234-SEAT-A12";
             handleScanComplete(mockCode);
-            stopScanner();
           }, 3000);
         }
       } catch (err) {
@@ -43,6 +43,11 @@ const Scanner: React.FC<ScannerProps> = ({ onScanComplete }) => {
   };
 
   const stopScanner = () => {
+    if (scanTimeoutRef.current) {
+      clearTimeout(scanTimeoutRef.current);
+      scanTimeoutRef.current = null;
+    }
+
     if (videoRef.current && videoRef.current.srcObject) {
       const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
       tracks.forEach(track => track.stop());
